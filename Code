@@ -1,0 +1,27 @@
+from pynput.mouse import Controller,Button,Listener
+from mss import mss
+
+#Coordinate Tool
+def on_click(x,y,button,pressed):
+    if pressed:
+        print('Mouse Clicked at ({0}, {1})'.format(x,y))
+
+# with Listener(on_click=on_click) as listener:
+#     listener.join()
+
+def tile_bot():
+    x_coordinate = 1398
+    y_coordinate = 582
+    screenshot = (x_coordinate, y_coordinate, x_coordinate + 449, y_coordinate + 109)
+    middle_tile = (57, 170, 283, 396)
+    mouse = Controller()
+    with mss() as sct:
+        img = sct.grab(screenshot)
+        for mid in middle_tile:
+            if img.pixel(mid, 0)[0] == 0 and img.pixel(mid, 14)[0] == 0:
+                mouse.position = (x_coordinate + mid, y_coordinate +109)
+                mouse.click(Button.left, 1)
+                print('Click')
+
+while True:
+    tile_bot()
